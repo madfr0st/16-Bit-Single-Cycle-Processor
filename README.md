@@ -23,7 +23,7 @@ The main objective was to create a simple processor architecture that adheres to
 
 ---
 
-## ⚙️ Processor Features
+## Processor Features
 - **Single-Cycle Design** – Each instruction completes in one clock cycle.  
 - **Non-Pipelined** – Instructions execute sequentially without overlap.  
 - **16-bit Word Size** – Handles 16-bit data at a time.  
