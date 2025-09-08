@@ -35,7 +35,6 @@ The main objective was to create a simple processor architecture that adheres to
 ## Architecture
 
 ### Datapath & Control Path
-<img width="676" height="769" alt="Datapath Schematic" src="https://github.com/user-attachments/assets/1c01cbc1-fdc0-4657-b01d-f81d62b35ba9" />
 
 The diagram shows how processor components are interconnected and how data flows through the system.
 
