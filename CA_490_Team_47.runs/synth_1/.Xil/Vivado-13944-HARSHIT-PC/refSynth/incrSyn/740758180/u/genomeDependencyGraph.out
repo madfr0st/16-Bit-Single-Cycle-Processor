@@ -1,0 +1,13 @@
+DISSOLVE_GENOME: GENOME data_memory__GB0_tempName GENOME data_memory__GB1_tempName GENOME data_memory__GB2_tempName GENOME data_memory__GB3_tempName GENOME data_memory__GB4_tempName GENOME data_memory__GB5_tempName GENOME CPU__GC0_tempName GENOME CPU__GC0 GENOME data_memory__GB0 GENOME data_memory__GB1 GENOME data_memory__GB2 GENOME data_memory__GB3 GENOME data_memory__GB4 GENOME data_memory__GB5
+INST data_memory__GB0 PIN 19: GENOME data_memory__GB0 PIN 19
+GENOME data_memory__GB0 PIN 19: INST data_memory__GB0 PIN 19
+INST data_memory__GB1 PIN 1748: GENOME data_memory__GB1 PIN 1748
+GENOME data_memory__GB1 PIN 1748: INST data_memory__GB1 PIN 1748
+INST data_memory__GB2 PIN 2275: GENOME data_memory__GB2 PIN 2275
+GENOME data_memory__GB2 PIN 2275: INST data_memory__GB2 PIN 2275
+INST data_memory__GB3 PIN 926: GENOME data_memory__GB3 PIN 926
+GENOME data_memory__GB3 PIN 926: INST data_memory__GB3 PIN 926
+INST data_memory__GB4 PIN 358: GENOME data_memory__GB4 PIN 358
+GENOME data_memory__GB4 PIN 358: INST data_memory__GB4 PIN 358
+INST data_memory__GB5 PIN 437: GENOME data_memory__GB5 PIN 437
+GENOME data_memory__GB5 PIN 437: INST data_memory__GB5 PIN 437

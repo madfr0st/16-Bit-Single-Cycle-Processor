@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<Checkpoint Version="23" Minor="0">
+	<BUILD_NUMBER Name="5239630"/>
+	<FULL_BUILD Name="SW Build 5239630 on Fri Nov 08 22:35:27 MST 2024"/>
+	<PRODUCT Name="Vivado v2024.2 (64-bit)"/>
+	<Part Name="xc7a35tcpg236-1"/>
+	<FeatureSet Name="FeatureSet_Classic"/>
+	<NEXTGEN_VERSAL Name="0"/>
+	<Top Name="CPU"/>
+	<DisableAutoIOBuffers Name="0"/>
+	<OutOfContext Name="0"/>
+	<MacroLevel Name="1"/>
+	<RunGenerated Name="1"/>
+	<HDPlatform Name="0"/>
+	<File Type="VERILOG_STUB" Name="CPU_stub.v" ModTime="1744147698"/>
+	<File Type="VHDL_STUB" Name="CPU_stub.vhdl" ModTime="1744147698"/>
+	<File Type="PARAMXML" Name="CPU_param.xml" ModTime="1744147698"/>
+	<File Type="PARAMXML" Name="CPU_param.xml" ModTime="1744147698"/>
+	<File Type="XN" Name="CPU.xn" ModTime="1744147698"/>
+	<File Type="SHAPE" Name="CPU.shape" ModTime="1744147698"/>
+	<File Type="EDIF" Name="CPU.edf" ModTime="1744147698"/>
+	<File Type="INCR" Name="CPU.incr" ModTime="1744147698"/>
+	<File Type="RDA" Name="CPU.rda" ModTime="1744147698"/>
+	<File Type="JSON_RDA" Name="CPU_rda.json" ModTime="1744147698"/>
+	<File Type="WDF" Name="CPU.wdf" ModTime="1744147698"/>
+	<File Type="SYNTH" Name="CPU.synth" ModTime="1744147698"/>
+</Checkpoint>
+
