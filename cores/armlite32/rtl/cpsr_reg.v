@@ -1,7 +1,7 @@
 // =============================================================================
 // cpsr_reg.v  --  the CPSR (current program status register) for armlite32
 // =============================================================================
-// We only model the 4 condition flags {N, Z, C, V}. Real ARM CPSR also holds
+// Only the 4 condition flags {N, Z, C, V} are modelled. Real ARM CPSR also holds
 // the processor mode, I/F interrupt-disable bits, T (Thumb), etc.; those are
 // out of scope here.
 //

@@ -7,9 +7,9 @@
 ## can swap the synth top to either one if you've added your own xdc.
 ##
 ## Why this exists:
-##   We don't commit *.xpr / *.cache / *.runs / *.hw / etc. to git -- they
-##   are huge, machine-specific, and break on Vivado version bumps. This
-##   script re-creates a clean project from the RTL we DO commit.
+##   The *.xpr / *.cache / *.runs / *.hw / etc. are NOT committed to git --
+##   they are huge, machine-specific, and break on Vivado version bumps.
+##   This script re-creates a clean project from the RTL that IS committed.
 ##
 ## Usage:
 ##   1. Open Vivado.
@@ -24,7 +24,7 @@ set proj_name "three_cpus"
 set proj_dir  [file normalize "./build"]
 set part      "xc7a35tcpg236-1"
 
-# Wipe any previous build so we start clean
+# Wipe any previous build so the next run starts clean
 file delete -force $proj_dir
 
 create_project $proj_name $proj_dir -part $part -force

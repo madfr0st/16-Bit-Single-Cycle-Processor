@@ -126,10 +126,10 @@ module control_unit (
             `OP_SAR: begin alu_op=`ALU_SAR; reg_we=1; flags_update=1; end
 
             // ---------------- Unary ----------------------------------------
-            // For INC/DEC we use ADD/SUB with B forced to the immediate +-1
+            // For INC/DEC, ADD/SUB run with B forced to the immediate +-1
             // via alu_b_imm=1 and an imm of 0x0001 generated in cpu.v from
-            // the unary-instruction itself. To keep the decoder simple we
-            // route through a dedicated combinational override; see cpu.v.
+            // the unary-instruction itself. To keep the decoder simple, a
+            // dedicated combinational override does the routing; see cpu.v.
             `OP_INC: begin alu_op=`ALU_ADD; alu_b_imm=1; reg_we=1; flags_update=1; end
             `OP_DEC: begin alu_op=`ALU_SUB; alu_b_imm=1; reg_we=1; flags_update=1; end
             `OP_NEG: begin alu_op=`ALU_NEG; reg_we=1; flags_update=1; end

@@ -24,7 +24,7 @@
 module instruction_memory #(
     parameter DEPTH_WORDS = 1024
 ) (
-    input  wire [31:0] address,        // byte address; we use [31:2]
+    input  wire [31:0] address,        // byte address; only [31:2] is used
     output reg  [31:0] instruction
 );
 

@@ -1,16 +1,21 @@
 // =============================================================================
-// data_memory.v  --  4 KB byte-addressed RAM, word-granular for x86lite32
+// shared_memory.v  --  on-SM scratchpad RAM (NVIDIA's "shared memory")
 // =============================================================================
-// Combinational 32-bit reads, synchronous 32-bit writes (word-aligned only;
-// real x86 obviously supports unaligned access, but this doesn't, for simplicity).
+// In NVIDIA hardware shared memory is *banked* (32 banks); two lanes
+// touching different banks the same cycle is conflict-free, two lanes
+// touching the same bank serialise. Modelling banks is overkill for a
+// teaching design, so this module exposes a single-port abstraction: in
+// each cycle, at most ONE lane reads/writes shared memory. The caller
+// (top level) is responsible for arbitrating which lane wins -- here it
+// wires lane 0 for simplicity since the demo program doesn't use shared
+// memory.
 //
-// Address arithmetic uses bits [11:2] (word index). Top bits beyond the
-// memory are ignored.
+// 4 KB, word-addressed.
 // =============================================================================
 `timescale 1ns / 1ps
 
-module data_memory #(
-    parameter DEPTH_WORDS = 1024     // 4 KB
+module shared_memory #(
+    parameter DEPTH_WORDS = 1024
 ) (
     input  wire        clk,
     input  wire        rst,
@@ -31,9 +36,6 @@ module data_memory #(
         end
         else if (we) begin
             mem[word_idx] <= wdata;
-            // synthesis translate_off
-            $display("[DM] WRITE addr=%08h data=%08h", addr, wdata);
-            // synthesis translate_on
         end
     end
 

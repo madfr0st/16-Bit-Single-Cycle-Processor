@@ -51,7 +51,7 @@ module cpu (
     wire [15:0] imm16  = instruction[15: 0];
     wire [31:0] imm32  = {{16{imm16[15]}}, imm16};   // sign extend
 
-    // ---- For INC / DEC we override the immediate to +-1 via this mux ------
+    // ---- For INC / DEC the immediate is overridden to +-1 via this mux ----
     wire is_inc = (opcode == `OP_INC);
     wire is_dec = (opcode == `OP_DEC);
     wire [31:0] effective_imm =
@@ -177,7 +177,7 @@ module cpu (
     // ---------------- Memory address + write-data muxes --------------------
     assign mem_addr  = mem_addr_sel ? (esp_data + (esp_delta == -32'sd4 ? -32'sd4 : 32'sd0))
                                     :  alu_result;
-    //   PUSH/CALL store TO new ESP (= ESP-4): we pre-subtract here so the
+    //   PUSH/CALL store TO new ESP (= ESP-4): pre-subtract here so the
     //   write hits the right slot in the same cycle the ESP register is
     //   updated.
     //   POP/RET  read  FROM old ESP, so esp_delta=+4 contributes 0 here.

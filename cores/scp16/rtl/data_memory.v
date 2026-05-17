@@ -4,7 +4,7 @@
 // Why combinational reads?
 //   In a single-cycle CPU, LW must produce the loaded word on the SAME edge
 //   that the register file will latch it. Registered (clocked) reads add a
-//   one-cycle skew and silently break LW. We therefore drive `data_out`
+//   one-cycle skew and silently break LW. So `data_out` is driven
 //   purely combinationally from the address; only writes are clocked.
 //
 // byte_enable:

@@ -43,7 +43,7 @@ module register_file #(
     assign esp_data = regs[`ESP_INDEX];
 
     // ---- Sync write --------------------------------------------------------
-    // Priority: esp_we beats we when both target R15 in the same cycle
+    // Priority: esp_we beats the normal we when both target R15 in the same cycle
     // (e.g. POP into R15 itself -> the ESP-side update wins, mirroring
     // x86's "pop esp" behaviour).
     always @(posedge clk or posedge rst) begin

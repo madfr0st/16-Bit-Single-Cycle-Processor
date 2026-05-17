@@ -88,7 +88,7 @@ module cpu (
     );
 
     // ---------------- Register file ----------------------------------------
-    // wr_data and we are gated by cond_execute so a "skipped" instruction
+    // wr_data and the write-enable are gated by cond_execute so a "skipped" instruction
     // truly is a NOP.
     wire any_reg_write =
         (is_dp_reg | is_dp_imm) ? dp_writeback :
@@ -100,8 +100,8 @@ module cpu (
     wire [3:0]  wr_idx;
     wire [31:0] wr_data;
 
-    // For STR we need to read Rd (the data source). Our register file has
-    // only two read ports, so we *repurpose* the rm port: during LS, route
+    // STR needs to read Rd (the data source). The register file has only
+    // two read ports, so the rm port is *repurposed*: during LS, route
     // rd_idx into rm_idx. The barrel shifter's rm_data input is don't-care
     // during LS (alu_b is driven from the immediate offset instead), so
     // this repurposing has no side effects.
@@ -174,7 +174,7 @@ module cpu (
     );
 
     // ---------------- Writeback --------------------------------------------
-    // Default destination is Rd. For BL we redirect to LR.
+    // Default destination is Rd. For BL the destination redirects to LR.
     assign wr_idx  = is_branch_link ? `REG_LR : rd_idx;
     assign wr_data = is_branch_link ? (pc + 32'd4) :
                      is_load        ? mem_rdata    :

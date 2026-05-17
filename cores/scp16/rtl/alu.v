@@ -2,7 +2,7 @@
 // alu.v  --  16-bit ALU + branch comparator + branch/jump target adder
 // =============================================================================
 // In a textbook diagram the branch comparator and the PC-target adder are
-// usually drawn as separate boxes. To keep the gate count low we let the
+// usually drawn as separate boxes. To keep the gate count low the design lets the
 // single ALU do all three jobs; control signals pick which mode it's in.
 //
 // MODE 1: immi_enable = 1 (I-type / branches)

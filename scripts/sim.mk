@@ -20,8 +20,8 @@ SIM_DIR := cores/$(CORE)/sim
 BUILD   := build_sim/$(CORE)
 
 RTL     := $(wildcard $(RTL_DIR)/*.v)
-TB      := $(SIM_DIR)/cpu_tb.v
-OUT     := $(BUILD)/cpu_tb.vvp
+TB      := $(wildcard $(SIM_DIR)/*_tb.v)   # picks up cpu_tb.v or gpu_tb.v
+OUT     := $(BUILD)/sim.vvp
 VCD     := dump.vcd
 
 # Allow the sim to find `defines.v` via -I for the 32-bit cores

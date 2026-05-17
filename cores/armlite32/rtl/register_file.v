@@ -2,11 +2,11 @@
 // register_file.v  --  16 x 32-bit GPRs for armlite32
 // =============================================================================
 // Two combinational read ports (Rn, Rm) plus a synchronous write port (Rd).
-// In real ARM the PC is R15; here we expose R15 read combinationally (so the
+// In real ARM the PC is R15; here R15 reads combinationally (so the
 // top level can route PC -> R15 read), but writes to R15 trigger a PC update
 // outside this module (see cpu.v / program_counter.v).
 //
-// We treat R15 as a normal storage register here but provide an external
+// R15 lives as a normal storage register here but the design provides an external
 // `pc_in` hook so the top level can keep R15 in sync with the actual PC.
 // =============================================================================
 `timescale 1ns / 1ps

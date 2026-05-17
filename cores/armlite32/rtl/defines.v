@@ -15,7 +15,7 @@
 //   * R15 is the PC, R14 is the link register (LR), R13 is the stack pointer
 //   * CPSR flag bits N (negative), Z (zero), C (carry), V (overflow)
 //
-// INSTRUCTION FORMATS (we implement a subset)
+// INSTRUCTION FORMATS (only a subset is implemented)
 //
 //   Data-processing register-form (I=0):
 //   31  28 27 25 24    21 20 19  16 15 12 11  7 6 5 4 3   0
@@ -42,7 +42,7 @@
 //  +-----+----+--+----------------------------------------+
 //
 //   (Real ARM has many more formats: multiply, swap, status-reg, coprocessor,
-//    Thumb, ...; we omit them for clarity.)
+//    Thumb, ...; those are omitted for clarity.)
 // =============================================================================
 `ifndef ARMLITE32_DEFINES_V
 `define ARMLITE32_DEFINES_V
@@ -100,8 +100,8 @@
 `define REG_LR  4'd14
 `define REG_PC  4'd15
 
-// ---- CPSR flag positions inside our 4-bit flag bus -------------------------
-//      We pack {N, Z, C, V}.
+// ---- CPSR flag positions inside the 4-bit flag bus -------------------------
+//      Packed as {N, Z, C, V}.
 `define FLAG_N  3
 `define FLAG_Z  2
 `define FLAG_C  1

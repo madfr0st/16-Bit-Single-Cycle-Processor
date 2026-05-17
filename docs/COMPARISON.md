@@ -1,9 +1,9 @@
-# Five Processors, Side By Side
+# Seven Processors, Side By Side
 
-This doc lays the three teaching cores in this repo next to the two real
-production cores (Intel P-core, Apple M1 P-core) on every axis we can
-measure. If you read it top-to-bottom you'll see exactly how complexity
-scales as you climb from "I can build this in a weekend" to "this is the
+This doc lays the four teaching cores in this repo next to the three real
+production cores (Intel P-core, Apple M1 P-core, NVIDIA Hopper SM) on
+every axis that can be measured. Read top-to-bottom to see exactly how
+complexity scales from "I can build this in a weekend" to "this is the
 result of 25 years of work by hundreds of engineers".
 
 ---
@@ -154,3 +154,48 @@ ARM mainstream CPUs from 1985 to today.
   the ISA simplicity on an 8-wide decode and a ~630-entry ROB, sits at
   3.2 GHz, eats 5W per core. Wins on performance/Watt and is
   competitive on raw single-thread.
+- **gpulite32** &mdash; SIMT in 9 modules: one decoder broadcasts to 8
+  lanes, each with its own register file and predicate. Demonstrates
+  the throughput-over-latency design point.
+- **NVIDIA Hopper SM** &mdash; the apex of SIMT throughput. 128 CUDA
+  cores + 4 Tensor Cores per SM, 132 SMs per chip, ~270k threads
+  on-chip simultaneously, ~2000 TFLOPS FP16 from Tensor Cores. Hides
+  latency by massive multithreading instead of OoO speculation.
+
+---
+
+## Axis 8: Where the GPU sits on every axis
+
+GPUs and CPUs optimise for fundamentally different points:
+
+| Axis                | CPU goal              | GPU goal               |
+|---------------------|------------------------|-------------------------|
+| What it optimises   | latency of one thread | throughput of many     |
+| How it hides memory | OoO speculation, caches| massive multithreading |
+| Width of decode     | 4-8 (parallel decode) | 1 (broadcast to lanes) |
+| Concurrency unit    | 1-8 threads (HT/SMT)  | thousands of threads   |
+| Branch handling     | predict + recover     | predicate + serialize  |
+| Programming model   | scalar (per thread)   | SIMT (per warp)        |
+
+Side-by-side numbers:
+
+|                                | gpulite32   | NVIDIA H100 SM      |
+|--------------------------------|-------------|----------------------|
+| Lanes per warp                  | 8           | 32                   |
+| CUDA cores per SM               | 8           | 128                  |
+| Tensor Cores per SM             | 0           | 4 (4th gen)          |
+| Warp schedulers per SM          | 1           | 4                    |
+| Max concurrent warps per SM     | 1           | 64                   |
+| Per-thread registers            | 16          | up to 255            |
+| Register file per SM            | 256 B       | 256 KB               |
+| Shared memory per SM            | 4 KB        | up to 228 KB         |
+| L1 / L2 caches                  | none        | yes / 50 MB chip     |
+| Floating-point                  | none        | FP64/32/16/BF16/FP8  |
+| Memory bandwidth                | trivial    | 3.35 TB/s HBM3       |
+| Process node                    | FPGA 28-nm | TSMC 4N (custom 5 nm)|
+| Transistors                     | ~50k LUTs   | 80 billion           |
+| TDP                             | <1 W       | 700 W                |
+| Peak FP16 TFLOPS                | 0           | 1979 (Tensor Cores)  |
+
+The factor between gpulite32 and a single H100 SM, on most useful axes,
+is **about 100x to 1,000,000x**. And an H100 has 132 SMs.

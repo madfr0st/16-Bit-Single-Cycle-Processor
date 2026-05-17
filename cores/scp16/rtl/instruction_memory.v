@@ -2,7 +2,7 @@
 // instruction_memory.v  --  byte-addressed ROM, little-endian, async read
 // =============================================================================
 // The CPU asks for an instruction at byte-address `address`. Because each
-// instruction is 16 bits, we return { mem[address+1], mem[address] }
+// instruction is 16 bits, the returned word is { mem[address+1], mem[address] }
 // (low byte at the lower address  =  little-endian).
 //
 // PROGRAM LOADING

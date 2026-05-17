@@ -6,7 +6,7 @@
 //   * register  form: Rm shifted by either an immediate amount or by Rs[7:0],
 //                     using one of LSL/LSR/ASR/ROR
 //
-// We support:
+// This module supports:
 //   * Immediate form with rotate (matches DP_IMM encoding)
 //   * Register form with immediate shift amount  (matches DP_REG encoding)
 //

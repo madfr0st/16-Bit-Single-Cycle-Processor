@@ -3,7 +3,7 @@
 // =============================================================================
 // In real ARM, R15 is the PC and is part of the register file. It also reads
 // as "current instruction address + 8" because of the classic 3-stage pipeline
-// quirk. We DON'T emulate that quirk -- our PC reads as the current
+// quirk. That quirk is NOT emulated here -- the PC reads as the current
 // instruction's address (the cleaner academic convention).
 //
 // Priority (async reset to 0):

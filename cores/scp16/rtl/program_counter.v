@@ -8,7 +8,7 @@
 //   4. inc    -> PC = PC + 2                   (instructions are 2 bytes wide)
 //   5. else   -> PC unchanged                  (hold)
 //
-// We add 2 because the instruction memory is byte-addressed and one
+// PC adds 2 because the instruction memory is byte-addressed and one
 // instruction = 16 bits = 2 bytes (little-endian inside instruction_memory.v).
 // =============================================================================
 `timescale 1ns / 1ps

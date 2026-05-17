@@ -49,8 +49,9 @@
 "An Intel CPU" today is a heterogeneous *system on chip*: multiple
 performance cores ("P-cores"), multiple efficiency cores ("E-cores", since
 Alder Lake), an integrated graphics block, a memory controller, a system
-agent, last-level cache, plus PCIe, USB, and platform glue. We focus on the
-P-core because that's where the microarchitectural fireworks live.
+agent, last-level cache, plus PCIe, USB, and platform glue. This doc
+focuses on the P-core because that's where the microarchitectural
+fireworks live.
 
 A modern Intel P-core is **deeply out-of-order, ~8-wide on the front end,
 ~12-wide on the back end, has hundreds of in-flight instructions, executes
@@ -239,8 +240,8 @@ where the next instruction starts is non-trivial.
   segment ops, mode transitions) get expanded by a microsequencer that
   reads a microcode ROM.
 
-The decoder is the part that fundamentally has no equivalent in our
-`x86lite32`: we used fixed-width 32-bit encoding, so we needed no length
+The decoder is the part that fundamentally has no equivalent in
+`x86lite32`: it uses fixed-width 32-bit encoding, so no length
 predecode, no DSB, no MSROM. *That single decision* is the architectural
 difference between RISC and CISC at the front end.
 

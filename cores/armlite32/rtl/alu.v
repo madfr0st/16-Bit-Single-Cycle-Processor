@@ -8,7 +8,7 @@
 //   ADD/ADC : C = unsigned carry out
 //   SUB/SBC : C = NOT(unsigned borrow)    (so C=1 means no borrow)
 //   RSB/RSC : same as SUB but with operands swapped
-//   logical : C = preserved (we set it to 0 here for simplicity; a real ARM
+//   logical : C = preserved (forced to 0 here for simplicity; a real ARM
 //             would set it from the shifter carry-out)
 // =============================================================================
 `timescale 1ns / 1ps

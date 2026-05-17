@@ -2,7 +2,7 @@
 // data_memory.v  --  word-addressed 4 KB RAM for armlite32
 // =============================================================================
 // Combinational reads, synchronous writes. Word access only (real ARM also
-// supports byte / halfword via LDRB / LDRH / STRB / STRH; we omit those).
+// supports byte / halfword via LDRB / LDRH / STRB / STRH; those are omitted).
 //
 // Addresses are byte addresses; word index is addr[11:2].
 // =============================================================================

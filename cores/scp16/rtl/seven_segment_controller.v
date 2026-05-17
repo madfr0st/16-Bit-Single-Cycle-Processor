@@ -8,7 +8,7 @@
 //   an[3:0]  = digit-enable             active-LOW (one digit at a time)
 //
 // The eye perceives a digit as "on" if it is refreshed faster than ~1 kHz.
-// We split a counter and use the top two bits as `active_digit` so each
+// A refresh counter's top two bits drive `active_digit` so each
 // digit is refreshed at roughly clk / 2^18.  With a 100 MHz clk on the
 // Basys 3 that's ~380 Hz per digit -> flicker-free.
 //

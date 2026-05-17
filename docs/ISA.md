@@ -1,8 +1,9 @@
 # ISA Reference &mdash; all three cores
 
-This document is the authoritative encoding reference for the three cores in
-this repo. If you want to write programs by hand, this is the file to keep
-open.
+This document is the authoritative encoding reference for the CPU cores in
+this repo (scp16, x86lite32, armlite32). If you want to write programs by
+hand, this is the file to keep open. For the GPU ISA see
+[`../cores/gpulite32/README.md`](../cores/gpulite32/README.md).
 
 - [scp16](#scp16-16-bit)
 - [x86lite32](#x86lite32-32-bit-cisc-style)
