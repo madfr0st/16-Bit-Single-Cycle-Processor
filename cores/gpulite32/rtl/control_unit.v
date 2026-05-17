@@ -63,8 +63,8 @@ module control_unit (
 
         case (opcode)
             // --- Data movement -----------------------------------------------
-            `OP_MOV_RR:   begin reg_we = 1'b1; alu_op = 4'h0; alu_b_imm = 1'b0; end  // ALU PASS_B alternative: ADD with src1=0? simpler: just route mov path
-            `OP_MOV_RI:   begin reg_we = 1'b1; alu_op = 4'h0; alu_b_imm = 1'b1; end  // dst <- 0 + sext(imm)
+            `OP_MOV_RR:   begin reg_we = 1'b1; alu_op = 4'h8; alu_b_imm = 1'b0; end  // PASS_A: dst <- src1
+            `OP_MOV_RI:   begin reg_we = 1'b1; alu_op = 4'h9; alu_b_imm = 1'b1; end  // PASS_B: dst <- sext(imm)
             `OP_S2R_TID:  begin reg_we = 1'b1; reg_wb_tid  = 1'b1; end
             `OP_S2R_NTID: begin reg_we = 1'b1; reg_wb_ntid = 1'b1; end
 

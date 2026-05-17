@@ -25,6 +25,8 @@ module alu (
             4'h5: result = a ^ b;                 // XOR
             4'h6: result = a << b[4:0];           // SHL
             4'h7: result = a >> b[4:0];           // SHR (logical)
+            4'h8: result = a;                     // PASS_A  (for MOV.RR)
+            4'h9: result = b;                     // PASS_B  (for MOV.RI)
             default: result = 32'h0;
         endcase
     end
