@@ -7,9 +7,17 @@
 //   vvp build_sim/gpulite32.vvp
 //   gtkwave dump.vcd
 //
-// Expected output after EXIT:
-//   GLOBAL[0..28] = { 0, 1, 4, 9, 16, 25, 36, 49 }
-// (lane i wrote i*i to byte address i*4)
+// The default kernel is the paint demo (clear -> hline -> single pixel);
+// expected canvas:
+//
+//     . . . . . . . .       row 0
+//     . . . . . . . .       row 1
+//     . . . . . . . .       row 2
+//     # # # # # # # #       row 3   <-- hline color 0xAA
+//     . . . . . . . .       row 4
+//     . . . . . # . .       row 5   <-- single pixel (5,5) color 0xFF
+//     . . . . . . . .       row 6
+//     . . . . . . . .       row 7
 // =============================================================================
 `timescale 1ns / 1ps
 
@@ -37,6 +45,27 @@ module gpu_tb;
     initial clk = 0;
     always #5 clk = ~clk;
 
+    // ---- Pretty-print the 8x8 framebuffer ---------------------------------
+    task print_canvas;
+        integer r, c, word_idx;
+        reg [31:0] px;
+        begin
+            $display("\n   .---- 8x8 framebuffer ----.");
+            $display("    col: 0   1   2   3   4   5   6   7");
+            for (r = 0; r < 8; r = r + 1) begin
+                $write("r=%0d |  ", r);
+                for (c = 0; c < 8; c = c + 1) begin
+                    word_idx = r * 8 + c;
+                    px = uut.GMEM.mem[word_idx];
+                    if (px == 32'h0) $write("  . ");
+                    else             $write(" %02h ", px[7:0]);
+                end
+                $write("\n");
+            end
+            $display("   `------------------------'");
+        end
+    endtask
+
     initial begin
         $dumpfile("dump.vcd");
         $dumpvars(0, gpu_tb);
@@ -48,27 +77,22 @@ module gpu_tb;
         #25;
         rst = 0;
 
-        repeat (40) begin
+        repeat (300) begin
             @(posedge clk);
-            $display("%5t | %08h   | %08h   |   %b  |  %1b",
-                     $time, pc_debug, instr_debug, active_mask, exit_warp);
+            // Limit instruction trace to first ~16 cycles to keep output readable
+            if ($time < 200) begin
+                $display("%5t | %08h   | %08h   |   %b  |  %1b",
+                         $time, pc_debug, instr_debug, active_mask, exit_warp);
+            end
             if (exit_warp) begin
-                $display("---- Warp EXIT reached ----\n");
-                $display("Global memory contents (first 8 words):");
-                $display(" addr | word value | expected (lane^2)");
-                $display(" 0x00 | %08h   |  0", uut.GMEM.mem[0]);
-                $display(" 0x04 | %08h   |  1", uut.GMEM.mem[1]);
-                $display(" 0x08 | %08h   |  4", uut.GMEM.mem[2]);
-                $display(" 0x0C | %08h   |  9", uut.GMEM.mem[3]);
-                $display(" 0x10 | %08h   | 16", uut.GMEM.mem[4]);
-                $display(" 0x14 | %08h   | 25", uut.GMEM.mem[5]);
-                $display(" 0x18 | %08h   | 36", uut.GMEM.mem[6]);
-                $display(" 0x1C | %08h   | 49", uut.GMEM.mem[7]);
+                $display("---- EXIT reached at t=%0t ----", $time);
+                print_canvas();
                 $finish;
             end
         end
 
-        $display("\n---- Timed out (40 cycles, no EXIT) ----");
+        $display("\n---- Timed out (300 cycles, no EXIT) ----");
+        print_canvas();
         $finish;
     end
 

@@ -101,21 +101,81 @@ real numbers don't surprise you.
 | 0x1E | BRA            | `warp_PC += sext(imm) << 2` if any lane active|
 | 0x1F | BAR.SYNC / EXIT| `imm[10]=1` -> EXIT; `imm[10]=0` -> BAR.SYNC|
 
-## Demo program
+## Demo program: a tiny paint kernel
+
+The instruction memory ships with a hand-assembled "basic paint software"
+kernel that treats the first 256 bytes of global memory as an 8x8
+framebuffer (`pixel(row,col) = GLOBAL[(row*8 + col) * 4]`) and runs three
+classic paint primitives:
+
+1. **`clear_canvas(color=0)`** &mdash; each of the 8 lanes loops over rows
+   0..7 and writes 0 into its own column. 8 lanes x 8 rows = 64 pixels
+   cleared in 8 loop iterations.
+2. **`draw_hline(row=3, color=0xAA)`** &mdash; one `ST.GLOBAL` in parallel:
+   lane *i* writes color to pixel (3, *i*). **64 pixels of work in one
+   cycle.** This is the magic of SIMT.
+3. **`plot_pixel(5, 5, color=0xFF)`** &mdash; predicate-gated store. All 8
+   lanes flow through the instruction (you pay the cycle either way) but
+   only lane 5 retires the write. This is how an `if (tid == X)` block
+   compiles on a GPU.
+
+Pseudo-PTX:
 
 ```
-S2R   R0, %tid.x       ; each lane reads its own thread id   -> R0 = 0..7
-MUL   R1, R0, R0       ; R1[lane] = tid * tid                -> 0,1,4,9,16,25,36,49
-MOV   R3, #2           ; (shift count for 4-byte stride)
-SHL   R2, R0, R3       ; R2[lane] = tid * 4                  (byte offset)
-ST.G  [R2+0], R1       ; GLOBAL[tid*4] = R1[lane]
-EXIT
+        S2R     R0, %tid.x          ; R0 = column = tid
+        MOV     R10, #1             ; constants live in registers
+        MOV     R11, #2             ; (word -> byte shift)
+        MOV     R12, #3             ; (col -> stride-of-8 shift)
+        MOV     R8,  #8             ; loop limit
+
+; ---- clear_canvas(0) -----------------------------------------------------
+        MOV     R5,  #0             ; row = 0
+clear:  SETP.GE P0, R5, R8
+        @P0 BRA after_clear
+        SHL     R2, R5, R12         ; row * 8
+        ADD     R2, R2, R0          ; + col
+        SHL     R2, R2, R11         ; * 4  (byte address)
+        MOV     R1, #0
+        ST.G    [R2+0], R1
+        ADD     R5, R5, R10
+        BRA     clear
+
+; ---- draw_hline(3, 0xAA) -------------------------------------------------
+after_clear:
+        MOV     R5, #3
+        SHL     R2, R5, R12
+        ADD     R2, R2, R0
+        SHL     R2, R2, R11
+        MOV     R1, #170
+        ST.G    [R2+0], R1          ; 8 lanes write 8 pixels in ONE cycle
+
+; ---- plot_pixel(5, 5, 0xFF) ---------------------------------------------
+        MOV     R3, #5
+        SETP.EQ P1, R0, R3          ; P1 = (col == 5)
+        MOV     R6, #5
+        SHL     R2, R6, R12
+        ADD     R2, R2, R3
+        SHL     R2, R2, R11
+        MOV     R1, #255
+        @P1 ST.G [R2+0], R1         ; only lane 5 retires
+        EXIT
 ```
 
-After execution, the global memory holds `{0, 1, 4, 9, 16, 25, 36, 49}` in
-words 0..7 &mdash; *each lane wrote a different value to a different
-address*, in the same cycle, with one instruction. That's the entire
-point of SIMT.
+Expected canvas after the kernel halts:
+
+```
+   .---- 8x8 framebuffer ----.
+    col: 0   1   2   3   4   5   6   7
+r=0 |    .   .   .   .   .   .   .   .
+r=1 |    .   .   .   .   .   .   .   .
+r=2 |    .   .   .   .   .   .   .   .
+r=3 |   aa  aa  aa  aa  aa  aa  aa  aa     <-- hline
+r=4 |    .   .   .   .   .   .   .   .
+r=5 |    .   .   .   .   .  ff   .   .     <-- single pixel
+r=6 |    .   .   .   .   .   .   .   .
+r=7 |    .   .   .   .   .   .   .   .
+   `------------------------'
+```
 
 ## Run it
 
