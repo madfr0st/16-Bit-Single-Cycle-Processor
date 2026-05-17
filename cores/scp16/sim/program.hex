@@ -1,0 +1,37 @@
+// program.hex -- demo program for instruction_memory (loaded via $readmemh
+//                when MEM_HEX_FILE is defined).
+//
+// Format: one byte per line, in hex, address increments by 1 per line.
+// Little-endian per 16-bit instruction (low byte first).
+//
+// Layout:
+//   PC=0x00  ADDI R1, R1, 1   -- 0x3111  -> bytes 11 31
+//   PC=0x02  ADD  R1, R0, R1  -- 0x0110  -> bytes 10 01
+//   PC=0x04  ADD  R1, R0, R1
+//   PC=0x06  ADD  R1, R0, R1
+//   PC=0x08  ADD  R1, R0, R1
+//   PC=0x0A  ADD  R1, R0, R1
+//   PC=0x0C  ADD  R1, R0, R1
+//   PC=0x0E  ADD  R1, R0, R1
+//   PC=0x10  ADD  R1, R0, R1
+//   PC=0x12  JMP  -0x112      -- 0x6FEE  -> bytes EE 6F  (wraps to PC=0x00)
+11
+31
+10
+01
+10
+01
+10
+01
+10
+01
+10
+01
+10
+01
+10
+01
+10
+01
+EE
+6F

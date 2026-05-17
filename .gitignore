@@ -1,0 +1,38 @@
+# ---- Vivado project artifacts (regenerable from scripts/create_project.tcl) -
+*.cache/
+*.hw/
+*.ip_user_files/
+*.runs/
+*.sim/
+*.jou
+*.log
+*.str
+*.pb
+*.dcp
+*.bit
+*.ltx
+*.wdb
+.Xil/
+xsim.dir/
+hd_visual/
+webtalk*.xml
+vivado*.backup.*
+
+# ---- Icarus Verilog / GTKWave -----------------------------------------------
+*.vvp
+*.vcd
+dump.vcd
+
+# ---- Verilator --------------------------------------------------------------
+obj_dir/
+
+# ---- OS ---------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+
+# ---- Editors ----------------------------------------------------------------
+.vscode/
+.idea/
+.claude/
+*.swp
+*~
